@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import login_user,logout_user,login_manager,LoginManager
 from flask_login import login_required,current_user
 import json
+import os
 
 # MY db connection
 local_server= True
@@ -23,9 +24,10 @@ def load_user(user_id):
 
 
 # app.config['SQLALCHEMY_DATABASE_URL']='mysql://username:password@localhost/databas_table_name'
-app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/student'
+app.config['SQLALCHEMY_DATABASE_URI']= os.getenv('postgresql://student_management_system_oh4j_user:JVA8gNtjtp16uButIrMCycVXqxUkV6Gb@dpg-codb95a0si5c738t1jpg-a.oregon-postgres.render.com/student_management_system_oh4j')
+# postgres://student_management_system_oh4j_user:JVA8gNtjtp16uButIrMCycVXqxUkV6Gb@dpg-codb95a0si5c738t1jpg-a.oregon-postgres.render.com/student_management_system_oh4j
+# postgres://student_management_system_oh4j_user:JVA8gNtjtp16uButIrMCycVXqxUkV6Gb@dpg-codb95a0si5c738t1jpg-a.oregon-postgres.render.com/student_management_system_oh4j
 db=SQLAlchemy(app)
-
 # here we will create db models that is tables
 class Test(db.Model):
     id=db.Column(db.Integer,primary_key=True)
@@ -97,7 +99,7 @@ def department():
         dep=Department(branch=dept)
         db.session.add(dep)
         db.session.commit()
-        flash("Department Addes","success")
+        flash("Department Added","success")
     return render_template('department.html')
 
 @app.route('/addattendance',methods=['POST','GET'])
